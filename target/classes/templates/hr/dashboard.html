@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - HR Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/hr/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/hr/dashboard}">Dashboard</a>
+        <a th:href="@{/hr/post-job}">Post Job</a>
+        <a th:href="@{/hr/view-jobs}">View Jobs</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Welcome Message -->
+    <div class="page-title">
+        Welcome, <span th:text="${hr.name}">HR Name</span>!
+    </div>
+    <p style="color:#777; margin-top:-14px; margin-bottom:24px;">
+        <span th:text="${hr.company}">Company</span> |
+        <span th:text="${hr.designation}">Designation</span>
+    </p>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <h2 th:text="${totalJobs}">0</h2>
+            <p>Total Jobs Posted</p>
+        </div>
+        <div class="stat-card">
+            <h2 th:text="${totalApplications}">0</h2>
+            <p>Total Applications</p>
+        </div>
+    </div>
+
+    <!-- Recent Jobs Table -->
+    <div class="card">
+        <div style="display:flex; justify-content:space-between;
+                    align-items:center; margin-bottom:16px;">
+            <h3 style="color:#2c3e50;">Your Posted Jobs</h3>
+            <a th:href="@{/hr/post-job}" class="btn btn-primary btn-sm">
+                + Post New Job
+            </a>
+        </div>
+
+        <!-- Success message -->
+        <div th:if="${success}" class="alert alert-success"
+             th:text="${success}">
+        </div>
+
+        <!-- No jobs message -->
+        <div th:if="${#lists.isEmpty(jobs)}"
+             style="text-align:center; padding:30px; color:#777;">
+            No jobs posted yet.
+            <a th:href="@{/hr/post-job}">Post your first job</a>
+        </div>
+
+        <!-- Jobs Table -->
+        <div class="table-container" th:if="${!#lists.isEmpty(jobs)}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Job Title</th>
+                        <th>Required Skills</th>
+                        <th>Vacancies</th>
+                        <th>Location</th>
+                        <th>Posted Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="job, stat : ${jobs}">
+                        <td th:text="${stat.index + 1}"></td>
+                        <td th:text="${job.title}"></td>
+                        <td th:text="${job.requiredSkills}"></td>
+                        <td th:text="${job.vacancies}"></td>
+                        <td th:text="${job.location}"></td>
+                        <td th:text="${job.postedDate}"></td>
+                        <td>
+                            <!-- View ranked candidates button -->
+                            <a th:href="@{/hr/ranked-candidates/{id}(id=${job.id})}"
+                               class="btn btn-success btn-sm">
+                                View Candidates
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

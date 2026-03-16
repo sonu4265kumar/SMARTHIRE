@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - Post Job</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/hr/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/hr/dashboard}">Dashboard</a>
+        <a th:href="@{/hr/post-job}">Post Job</a>
+        <a th:href="@{/hr/view-jobs}">View Jobs</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">Post a New Job</div>
+
+    <div class="card" style="max-width: 700px;">
+
+        <!-- Success message -->
+        <div th:if="${success}" class="alert alert-success"
+             th:text="${success}">
+        </div>
+
+        <!-- Error message -->
+        <div th:if="${error}" class="alert alert-error"
+             th:text="${error}">
+        </div>
+
+        <!-- Post Job Form -->
+        <form th:action="@{/hr/post-job}" method="post">
+
+            <!-- Job Title -->
+            <div class="form-group">
+                <label>Job Title</label>
+                <input type="text"
+                       name="title"
+                       placeholder="e.g. Java Developer, Python Engineer"
+                       required/>
+            </div>
+
+            <!-- Job Description -->
+            <div class="form-group">
+                <label>Job Description</label>
+                <textarea name="description"
+                          rows="4"
+                          placeholder="Describe the job role and responsibilities...">
+                </textarea>
+            </div>
+
+            <!-- Required Skills -->
+            <div class="form-group">
+                <label>Required Skills (comma separated)</label>
+                <input type="text"
+                       name="requiredSkills"
+                       placeholder="e.g. java, spring boot, mysql, html, css"
+                       required/>
+                <small style="color:#777; font-size:12px;">
+                    These skills will be used to calculate ATS score of resumes.
+                </small>
+            </div>
+
+            <!-- Experience and Vacancies -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Experience Required (years)</label>
+                    <input type="number"
+                           name="experienceRequired"
+                           min="0"
+                           max="20"
+                           placeholder="e.g. 2"/>
+                </div>
+                <div class="form-group">
+                    <label>Number of Vacancies</label>
+                    <input type="number"
+                           name="vacancies"
+                           min="1"
+                           placeholder="e.g. 5"
+                           required/>
+                </div>
+            </div>
+
+            <!-- Location and Job Type -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Job Location</label>
+                    <input type="text"
+                           name="location"
+                           placeholder="e.g. Delhi, Mumbai, Remote"/>
+                </div>
+                <div class="form-group">
+                    <label>Job Type</label>
+                    <select name="jobType">
+                        <option value="">Select Type</option>
+                        <option value="Full-Time">Full-Time</option>
+                        <option value="Part-Time">Part-Time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Remote">Remote</option>
+                        <option value="Freelance">Freelance</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Salary and Closing Date -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Salary Range</label>
+                    <input type="text"
+                           name="salaryRange"
+                           placeholder="e.g. 3-5 LPA, 20-30k/month"/>
+                </div>
+                <div class="form-group">
+                    <label>Last Date to Apply</label>
+                    <input type="date"
+                           name="closingDate"/>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel buttons -->
+            <div style="display:flex; gap:12px; margin-top:8px;">
+                <button type="submit" class="btn btn-primary">
+                    Post Job
+                </button>
+                <a th:href="@{/hr/view-jobs}"
+                   class="btn btn-danger">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

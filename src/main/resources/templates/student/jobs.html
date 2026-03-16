@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - Browse Jobs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/student/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/student/dashboard}">Dashboard</a>
+        <a th:href="@{/student/jobs}">Browse Jobs</a>
+        <a th:href="@{/student/applied-jobs}">My Applications</a>
+        <a th:href="@{/student/ats-check}">ATS Check</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">Browse Available Jobs</div>
+
+    <!-- Search Bar -->
+    <form th:action="@{/student/jobs}" method="get">
+        <div class="search-bar">
+            <input type="text"
+                   name="search"
+                   th:value="${search}"
+                   placeholder="Search by job title, skills or location..."/>
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+            <!-- Clear search button -->
+            <a th:href="@{/student/jobs}"
+               class="btn btn-danger"
+               th:if="${search != null and search != ''}">
+                Clear
+            </a>
+        </div>
+    </form>
+
+    <!-- No jobs found message -->
+    <div th:if="${#lists.isEmpty(jobs)}"
+         class="card"
+         style="text-align:center; padding:40px; color:#777;">
+        No jobs found.
+        <a th:href="@{/student/jobs}">View all jobs</a>
+    </div>
+
+    <!-- Jobs Grid -->
+    <div class="jobs-grid" th:if="${!#lists.isEmpty(jobs)}">
+
+        <!-- Individual Job Card -->
+        <div class="job-card" th:each="job : ${jobs}">
+
+            <!-- Job Title -->
+            <h3 th:text="${job.title}"></h3>
+
+            <!-- Company Name -->
+            <p>
+                <strong>Company:</strong>
+                <span th:text="${job.hr.company}"></span>
+            </p>
+
+            <!-- Location -->
+            <p>
+                <strong>Location:</strong>
+                <span th:text="${job.location}"></span>
+            </p>
+
+            <!-- Job Type -->
+            <p>
+                <strong>Type:</strong>
+                <span th:text="${job.jobType}"></span>
+            </p>
+
+            <!-- Experience -->
+            <p>
+                <strong>Experience:</strong>
+                <span th:text="${job.experienceRequired} + ' years'"></span>
+            </p>
+
+            <!-- Salary -->
+            <p>
+                <strong>Salary:</strong>
+                <span th:text="${job.salaryRange}"></span>
+            </p>
+
+            <!-- Vacancies -->
+            <p>
+                <strong>Vacancies:</strong>
+                <span th:text="${job.vacancies}"></span>
+            </p>
+
+            <!-- Required Skills -->
+            <p>
+                <strong>Required Skills:</strong>
+            </p>
+            <div class="skill-tags">
+                <span th:each="skill :
+                      ${#strings.arraySplit(job.requiredSkills, ',')}"
+                      class="skill-tag skill-matched"
+                      th:text="${skill}">
+                </span>
+            </div>
+
+            <!-- Closing Date -->
+            <p style="margin-top:10px; font-size:13px; color:#e74c3c;">
+                <strong>Last Date:</strong>
+                <span th:text="${job.closingDate}"></span>
+            </p>
+
+            <!-- Apply Button -->
+            <div class="job-footer">
+                <a th:href="@{/student/apply/{id}(id=${job.id})}"
+                   class="btn btn-primary btn-sm">
+                    Apply Now
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

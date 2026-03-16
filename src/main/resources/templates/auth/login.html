@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <!-- Website Name -->
+        <h2>SmartHire Login</h2>
+
+        <!-- Error message - shown when login fails -->
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <!-- Success message - shown after registration -->
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <!-- Logout message - shown after logout -->
+        <div th:if="${logout}" class="alert alert-success" th:text="${logout}"></div>
+
+        <!-- Tab buttons to select login type -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('student', this)">
+                Student Login
+            </button>
+            <button class="tab-btn" onclick="showTab('hr', this)">
+                HR Login
+            </button>
+        </div>
+
+        <!-- Student Login Form -->
+        <div id="student-login">
+            <form th:action="@{/login}" method="post">
+
+                <!-- Hidden field to identify role -->
+                <input type="hidden" name="loginRole" value="STUDENT"/>
+
+                <div class="form-group">
+                    <label>Student Email</label>
+                    <input type="email"
+                           name="username"
+                           placeholder="Enter your email"
+                           required/>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password"
+                           name="password"
+                           placeholder="Enter your password"
+                           required/>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    Login as Student
+                </button>
+
+            </form>
+        </div>
+
+        <!-- HR Login Form -->
+        <div id="hr-login" style="display: none;">
+            <form th:action="@{/login}" method="post">
+
+                <!-- Hidden field to identify role -->
+                <input type="hidden" name="loginRole" value="HR"/>
+
+                <div class="form-group">
+                    <label>HR Email</label>
+                    <input type="email"
+                           name="username"
+                           placeholder="Enter company email"
+                           required/>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password"
+                           name="password"
+                           placeholder="Enter your password"
+                           required/>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    Login as HR
+                </button>
+
+            </form>
+        </div>
+
+        <!-- Register link -->
+        <div class="auth-footer">
+            New user?
+            <a th:href="@{/register}">Register here</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Tab switching logic -->
+<script>
+    function showTab(tab, el) {
+
+        // Hide both forms
+        document.getElementById('student-login').style.display = 'none';
+        document.getElementById('hr-login').style.display = 'none';
+
+        // Remove active from all tab buttons
+        document.querySelectorAll('.tab-btn')
+            .forEach(btn => btn.classList.remove('active'));
+
+        // Show selected form
+        document.getElementById(tab + '-login').style.display = 'block';
+
+        // Set clicked button as active
+        el.classList.add('active');
+    }
+</script>
+
+</body>
+</html>

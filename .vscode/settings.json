@@ -1,0 +1,11 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.jdt.ls.java.home": null,
+  "java.import.generatesMetadataFilesAtProjectRoot": true,
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true
+  },
+  "java.trace.server": "verbose",
+  "java.compile.nullAnalysis.mode": "automatic"
+}

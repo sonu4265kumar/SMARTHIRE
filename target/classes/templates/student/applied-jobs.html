@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - My Applications</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/student/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/student/dashboard}">Dashboard</a>
+        <a th:href="@{/student/jobs}">Browse Jobs</a>
+        <a th:href="@{/student/applied-jobs}">My Applications</a>
+        <a th:href="@{/student/ats-check}">ATS Check</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">My Applications</div>
+
+    <!-- Success message -->
+    <div th:if="${success}" class="alert alert-success"
+         th:text="${success}">
+    </div>
+
+    <!-- Error message -->
+    <div th:if="${error}" class="alert alert-error"
+         th:text="${error}">
+    </div>
+
+    <!-- Browse Jobs Button -->
+    <div style="margin-bottom: 20px;">
+        <a th:href="@{/student/jobs}" class="btn btn-primary">
+            Browse More Jobs
+        </a>
+    </div>
+
+    <!-- No applications message -->
+    <div th:if="${#lists.isEmpty(applications)}"
+         class="card"
+         style="text-align:center; padding:40px; color:#777;">
+        You have not applied for any job yet.
+        <a th:href="@{/student/jobs}">Browse available jobs</a>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="table-container"
+         th:if="${!#lists.isEmpty(applications)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Job Type</th>
+                    <th>ATS Score</th>
+                    <th>Matched Skills</th>
+                    <th>Missing Skills</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="app, stat : ${applications}">
+
+                    <!-- Serial number -->
+                    <td th:text="${stat.index + 1}"></td>
+
+                    <!-- Job details -->
+                    <td>
+                        <strong th:text="${app.job.title}"></strong>
+                    </td>
+                    <td th:text="${app.job.hr.company}"></td>
+                    <td th:text="${app.job.location}"></td>
+                    <td th:text="${app.job.jobType}"></td>
+
+                    <!-- ATS Score with color -->
+                    <td>
+                        <strong
+                            th:classappend="${app.atsScore >= 75} ? 'score-excellent' :
+                                           (${app.atsScore >= 50} ? 'score-good'      :
+                                           (${app.atsScore >= 25} ? 'score-average'   :
+                                           'score-low'))"
+                            th:text="${app.atsScore} + '%'">
+                        </strong>
+                    </td>
+
+                    <!-- Matched skills green tags -->
+                    <td>
+                        <div class="skill-tags">
+                            <span th:each="skill :
+                                  ${#strings.arraySplit(app.matchedSkills, ',')}"
+                                  class="skill-tag skill-matched"
+                                  th:text="${skill}">
+                            </span>
+                        </div>
+                    </td>
+
+                    <!-- Missing skills red tags -->
+                    <td>
+                        <div class="skill-tags">
+                            <span th:each="skill :
+                                  ${#strings.arraySplit(app.missingSkills, ',')}"
+                                  class="skill-tag skill-missing"
+                                  th:text="${skill}">
+                            </span>
+                        </div>
+                    </td>
+
+                    <td th:text="${app.appliedDate}"></td>
+
+                    <!-- Status Badge -->
+                    <td>
+                        <span class="badge"
+                              th:classappend="${app.status == 'APPLIED'}     ? 'badge-applied'     :
+                                             (${app.status == 'SHORTLISTED'} ? 'badge-shortlisted' :
+                                             (${app.status == 'SELECTED'}    ? 'badge-selected'    :
+                                             'badge-rejected'))"
+                              th:text="${app.status}">
+                        </span>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

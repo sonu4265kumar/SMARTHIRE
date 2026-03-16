@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - View Jobs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/hr/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/hr/dashboard}">Dashboard</a>
+        <a th:href="@{/hr/post-job}">Post Job</a>
+        <a th:href="@{/hr/view-jobs}">View Jobs</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">Your Posted Jobs</div>
+
+    <!-- Success / Error messages -->
+    <div th:if="${success}" class="alert alert-success"
+         th:text="${success}">
+    </div>
+    <div th:if="${error}" class="alert alert-error"
+         th:text="${error}">
+    </div>
+
+    <!-- Post New Job Button -->
+    <div style="margin-bottom: 20px;">
+        <a th:href="@{/hr/post-job}" class="btn btn-primary">
+            + Post New Job
+        </a>
+    </div>
+
+    <!-- No jobs message -->
+    <div th:if="${#lists.isEmpty(jobs)}"
+         class="card"
+         style="text-align:center; padding:40px; color:#777;">
+        No jobs posted yet.
+        <a th:href="@{/hr/post-job}">Post your first job</a>
+    </div>
+
+    <!-- Jobs Table -->
+    <div class="table-container" th:if="${!#lists.isEmpty(jobs)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Job Type</th>
+                    <th>Required Skills</th>
+                    <th>Experience</th>
+                    <th>Vacancies</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Closing Date</th>
+                    <th>Posted Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="job, stat : ${jobs}">
+
+                    <!-- Serial number -->
+                    <td th:text="${stat.index + 1}"></td>
+
+                    <!-- Job details -->
+                    <td><strong th:text="${job.title}"></strong></td>
+                    <td th:text="${job.jobType}"></td>
+                    <td th:text="${job.requiredSkills}"></td>
+                    <td th:text="${job.experienceRequired} + ' yrs'"></td>
+                    <td th:text="${job.vacancies}"></td>
+                    <td th:text="${job.location}"></td>
+                    <td th:text="${job.salaryRange}"></td>
+                    <td th:text="${job.closingDate}"></td>
+                    <td th:text="${job.postedDate}"></td>
+
+                    <!-- Action buttons -->
+                    <td>
+                        <div style="display:flex; gap:6px;">
+
+                            <!-- View ranked candidates -->
+                            <a th:href="@{/hr/ranked-candidates/{id}(id=${job.id})}"
+                               class="btn btn-success btn-sm">
+                                Candidates
+                            </a>
+
+                            <!-- Delete job -->
+                            <a th:href="@{/hr/delete-job/{id}(id=${job.id})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this job?')">
+                                Delete
+                            </a>
+
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

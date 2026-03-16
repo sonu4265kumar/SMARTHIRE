@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmartHire - Apply for Job</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <a href="/student/dashboard" class="nav-brand">SmartHire</a>
+    <div class="nav-links">
+        <a th:href="@{/student/dashboard}">Dashboard</a>
+        <a th:href="@{/student/jobs}">Browse Jobs</a>
+        <a th:href="@{/student/applied-jobs}">My Applications</a>
+        <a th:href="@{/student/ats-check}">ATS Check</a>
+        <a th:href="@{/logout}" class="logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">Apply for Job</div>
+
+    <!-- Already Applied Message -->
+    <div th:if="${alreadyApplied}" class="alert alert-error">
+        You have already applied for this job.
+        <a th:href="@{/student/applied-jobs}">View your applications</a>
+    </div>
+
+    <!-- Job Details Card -->
+    <div class="card" style="margin-bottom: 24px;">
+
+        <h3 style="color:#2c3e50; margin-bottom:16px;">Job Details</h3>
+
+        <div class="form-row">
+            <div>
+                <p style="font-size:13px; color:#777;">Job Title</p>
+                <p style="font-weight:bold; font-size:16px;"
+                   th:text="${job.title}">
+                </p>
+            </div>
+            <div>
+                <p style="font-size:13px; color:#777;">Company</p>
+                <p style="font-weight:bold; font-size:16px;"
+                   th:text="${job.hr.company}">
+                </p>
+            </div>
+        </div>
+
+        <div class="form-row" style="margin-top:12px;">
+            <div>
+                <p style="font-size:13px; color:#777;">Location</p>
+                <p th:text="${job.location}"></p>
+            </div>
+            <div>
+                <p style="font-size:13px; color:#777;">Job Type</p>
+                <p th:text="${job.jobType}"></p>
+            </div>
+            <div>
+                <p style="font-size:13px; color:#777;">Experience Required</p>
+                <p th:text="${job.experienceRequired} + ' years'"></p>
+            </div>
+            <div>
+                <p style="font-size:13px; color:#777;">Vacancies</p>
+                <p th:text="${job.vacancies}"></p>
+            </div>
+        </div>
+
+        <!-- Job Description -->
+        <div style="margin-top:12px;">
+            <p style="font-size:13px; color:#777;">Job Description</p>
+            <p th:text="${job.description}"></p>
+        </div>
+
+        <!-- Required Skills -->
+        <div style="margin-top:12px;">
+            <p style="font-size:13px; color:#777; margin-bottom:6px;">
+                Required Skills
+            </p>
+            <div class="skill-tags">
+                <span th:each="skill :
+                      ${#strings.arraySplit(job.requiredSkills, ',')}"
+                      class="skill-tag skill-matched"
+                      th:text="${skill}">
+                </span>
+            </div>
+        </div>
+
+        <!-- Salary and Closing Date -->
+        <div class="form-row" style="margin-top:12px;">
+            <div>
+                <p style="font-size:13px; color:#777;">Salary Range</p>
+                <p th:text="${job.salaryRange}"></p>
+            </div>
+            <div>
+                <p style="font-size:13px; color:#777; color:#e74c3c;">
+                    Last Date to Apply
+                </p>
+                <p style="color:#e74c3c; font-weight:bold;"
+                   th:text="${job.closingDate}">
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Resume Upload Card -->
+    <!-- Only show if not already applied -->
+    <div class="card" th:if="${!alreadyApplied}"
+         style="max-width: 600px;">
+
+        <h3 style="color:#2c3e50; margin-bottom:8px;">
+            Upload Your Resume
+        </h3>
+        <p style="color:#777; font-size:14px; margin-bottom:20px;">
+            Your resume will be scanned automatically and
+            an ATS score will be calculated based on the
+            required skills of this job.
+        </p>
+
+        <!-- Resume Upload Form -->
+        <form th:action="@{/student/apply/{id}(id=${job.id})}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- File Upload Box -->
+            <div class="form-group">
+                <label>Select Resume File</label>
+                <div class="file-upload"
+                     onclick="document.getElementById('resumeFile').click()">
+                    <p>📄 Click to select your resume</p>
+                    <p>Supported formats: PDF, DOC, DOCX</p>
+                    <!-- Show selected filename -->
+                    <p id="fileName"
+                       style="color:#2c3e50; font-weight:bold; margin-top:8px;">
+                    </p>
+                </div>
+                <!-- Hidden file input -->
+                <input type="file"
+                       id="resumeFile"
+                       name="resume"
+                       accept=".pdf,.doc,.docx"
+                       style="display:none"
+                       onchange="showFileName(this)"
+                       required/>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div style="display:flex; gap:12px; margin-top:8px;">
+                <button type="submit" class="btn btn-success">
+                    Submit Application
+                </button>
+                <a th:href="@{/student/jobs}"
+                   class="btn btn-danger">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Show selected file name -->
+<script>
+    function showFileName(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById('fileName').textContent =
+                'Selected: ' + input.files[0].name;
+        }
+    }
+</script>
+
+</body>
+</html>

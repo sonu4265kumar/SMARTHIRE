@@ -1,0 +1,14 @@
+com\smarthire\controller\AuthController.class
+com\smarthire\service\UserService.class
+com\smarthire\repository\JobRepository.class
+com\smarthire\repository\UserRepository.class
+com\smarthire\model\User.class
+com\smarthire\controller\HRController.class
+com\smarthire\service\ATSService.class
+com\smarthire\service\JobService.class
+com\smarthire\model\Job.class
+com\smarthire\config\SecurityConfig.class
+com\smarthire\SmartHireApplication.class
+com\smarthire\controller\StudentController.class
+com\smarthire\model\Application.class
+com\smarthire\repository\ApplicationRepository.class
