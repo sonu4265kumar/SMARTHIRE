@@ -2,12 +2,14 @@ FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x ./mvnw && ./mvnw -q dependency:go-offline -B
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
-COPY src ./src
-RUN ./mvnw -q clean package -DskipTests -B
+# Copy all files
+COPY . .
+
+# Build project
+RUN mvn clean package -DskipTests
 
 EXPOSE 8080
 CMD ["java", "-jar", "target/smarthire-0.0.1-SNAPSHOT.jar"]
