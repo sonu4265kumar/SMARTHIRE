@@ -1,3 +1,4 @@
+com\smarthire\config\PasswordConfig.class
 com\smarthire\controller\AuthController.class
 com\smarthire\service\UserService.class
 com\smarthire\repository\JobRepository.class

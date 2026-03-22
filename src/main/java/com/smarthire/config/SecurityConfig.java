@@ -8,72 +8,54 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * SecurityConfig Class
- * Configures Spring Security for the application.
- * Defines login, logout, role based access and password encryption.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private UserService userService; // used for loading user during login
+    private UserService userService;
 
-    /**
-     * Defines which routes are accessible by whom
-     */
+    @Autowired
+    private PasswordEncoder passwordEncoder; // 🔥 now injected (not created here)
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        // These pages are open for everyone
-                        .requestMatchers("/login", "/register",
-                                "/css/**", "/js/**")
-                        .permitAll()
-                        // Only HR can access /hr/ pages
-                        .requestMatchers("/hr/**").hasRole("HR")
-                        // Only Student can access /student/ pages
-                        .requestMatchers("/student/**").hasRole("STUDENT")
-                        // All other pages require login
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login") // custom login page
-                        .loginProcessingUrl("/login") // form action url
-                        .defaultSuccessUrl("/dashboard", true) // redirect after login
-                        .failureUrl("/login?error=true") // redirect on wrong password
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // logout url
-                        .logoutSuccessUrl("/login?logout=true") // redirect after logout
-                        .permitAll());
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/hr/**").hasRole("HR")
+                .requestMatchers("/student/**").hasRole("STUDENT")
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/dashboard", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .permitAll()
+            );
 
         return http.build();
     }
 
-    /**
-     * Password encoder using BCrypt algorithm
-     * Used to encrypt password during registration
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * Authentication manager
-     * Connects UserService and PasswordEncoder for login verification
-     */
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+
+        AuthenticationManagerBuilder authBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authBuilder
+            .userDetailsService(userService)
+            .passwordEncoder(passwordEncoder); // 🔥 no method call now
+
+        return authBuilder.build();
     }
 }

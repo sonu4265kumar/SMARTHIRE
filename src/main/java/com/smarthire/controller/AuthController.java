@@ -11,14 +11,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * AuthController Class
- * Handles login, register and dashboard redirect.
- * Routes: /login, /register, /dashboard
+ * Handles login, register, home page and dashboard redirect.
+ * Routes: /, /login, /register, /dashboard
  */
 @Controller
 public class AuthController {
 
     @Autowired
     private UserService userService; // handles user registration and login
+
+    /**
+     * Show home page
+     * GET /
+     */
+    @GetMapping("/")
+    public String home() {
+        return "index"; // templates/index.html
+    }
 
     /**
      * Show login page
