@@ -19,43 +19,38 @@ public class SecurityConfig {
     private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // 🔥 now injected (not created here)
+    private PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/hr/**").hasRole("HR")
-                .requestMatchers("/student/**").hasRole("STUDENT")
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/dashboard", true)
-                .failureUrl("/login?error=true")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
-                .permitAll()
-            );
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/register",
+                                "/css/**", "/js/**")
+                        .permitAll()
+                        .requestMatchers("/hr/**").hasRole("HR")
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll());
 
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-
-        AuthenticationManagerBuilder authBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-
+        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authBuilder
-            .userDetailsService(userService)
-            .passwordEncoder(passwordEncoder); // 🔥 no method call now
-
+                .userDetailsService(userService)
+                .passwordEncoder(passwordEncoder);
         return authBuilder.build();
     }
 }

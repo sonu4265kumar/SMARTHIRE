@@ -16,7 +16,14 @@
         <a th:href="@{/student/jobs}">Browse Jobs</a>
         <a th:href="@{/student/applied-jobs}">My Applications</a>
         <a th:href="@{/student/ats-check}">ATS Check</a>
-        <a th:href="@{/logout}" class="logout">Logout</a>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" style="background:none; border:none;
+                                  color:#e74c3c; cursor:pointer;
+                                  font-size:14px; padding:6px 14px;">
+        Logout
+    </button>
+</form>
     </div>
 </nav>
 
