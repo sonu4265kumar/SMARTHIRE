@@ -586,8 +586,8 @@ The application is deployed and accessible at:
         <strong>Ankit Maurya</strong>
       </a>
       <br/>
-      <
-    </td>
+      ,
+      </td>
     <td align="center">
       <a href="https://github.com/sonu4265kumar">
         <img src="https://github.com/sonu4265kumar.png"
@@ -597,7 +597,30 @@ The application is deployed and accessible at:
         <br/>
         <strong>Sonu Kumar</strong>
       </a>
-      <br/>
+        <br/>
+    </td>   
+    <td align="center">
+      <a href="https://github.com/rajan-1901">
+        <img src="https://github.com/rajan-1901.png"
+             width="100px"
+             style="border-radius:50%"
+             alt="Sonu Kumar"/>
+        <br/>
+        <strong>Rajan Kumar</strong>
+      </a>
+        <br/>
+    </td>   
+    <td align="center">
+      <a href="https://github.com/karan-sharma-aiml">
+        <img src="https://github.com/karan-sharma-aiml.png"
+             width="100px"
+             style="border-radius:50%"
+             alt="Sonu Kumar"/>
+        <br/>
+        <strong>Karan Sharma</strong>
+      </a>
+        <br/>
+    </td>   
       
     
   </tr>
