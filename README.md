@@ -586,11 +586,7 @@ The application is deployed and accessible at:
         <strong>Ankit Maurya</strong>
       </a>
       <br/>
-      <sub>Backend Development</sub>
-      <br/>
-      <sub>Java Spring Boot • Spring Security</sub>
-      <br/>
-      <sub>Database Design • Deployment</sub>
+      <
     </td>
     <td align="center">
       <a href="https://github.com/sonu4265kumar">
@@ -602,12 +598,8 @@ The application is deployed and accessible at:
         <strong>Sonu Kumar</strong>
       </a>
       <br/>
-      <sub>Frontend Development</sub>
-      <br/>
-      <sub>HTML • CSS • JavaScript</sub>
-      <br/>
-      <sub>UI/UX Design • Thymeleaf</sub>
-    </td>
+      
+    
   </tr>
 </table>
 
