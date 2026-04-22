@@ -583,7 +583,7 @@ The application is deployed and accessible at:
              style="border-radius:50%"
              alt="Ankit Kumar"/>
         <br/>
-        <strong>Ankit Maurya</strong>
+        <strong>Ankit Kumar</strong>
       </a>
       <br/>
       </td>
