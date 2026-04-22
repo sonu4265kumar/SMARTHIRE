@@ -586,7 +586,6 @@ The application is deployed and accessible at:
         <strong>Ankit Maurya</strong>
       </a>
       <br/>
-      ,
       </td>
     <td align="center">
       <a href="https://github.com/sonu4265kumar">
