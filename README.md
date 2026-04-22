@@ -581,7 +581,7 @@ The application is deployed and accessible at:
         <img src="https://github.com/AnkitMaurya0.png"
              width="100px"
              style="border-radius:50%"
-             alt="Ankit Maurya"/>
+             alt="Ankit Kumar"/>
         <br/>
         <strong>Ankit Maurya</strong>
       </a>
